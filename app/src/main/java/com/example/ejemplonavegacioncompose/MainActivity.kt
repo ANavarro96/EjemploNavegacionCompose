@@ -16,6 +16,9 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.example.ejemplonavegacioncompose.ui.PantallaSaludo
 import com.example.ejemplonavegacioncompose.ui.home.PantallaHome
+import com.example.ejemplonavegacioncompose.ui.keys.Perfil
+import com.example.ejemplonavegacioncompose.ui.keys.Principal
+import com.example.ejemplonavegacioncompose.ui.keys.Saludo
 
 import com.example.ejemplonavegacioncompose.ui.pantallas.PantallaPerfil
 import com.example.ejemplonavegacioncompose.ui.theme.EjemploNavegacionComposeTheme
@@ -31,14 +34,38 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     // TODO 2: Crear la PILA
-
+                    val pila = rememberNavBackStack(Principal)
 
                     // TODO 3: Crear el NavDisplay
+                    NavDisplay(
+                        backStack = pila, // stack asociado
+                        onBack = {
+                            pila.removeLastOrNull() // quito cima
+                        },
+                        // TODO 4: CREAR EL ENTRYPROVIDER
+                        entryProvider = entryProvider {
+                            entry<Principal> {
+                                PantallaHome(
+                                    onPerfilPulsado = { pila.add(Perfil)
+                                    },
+                                    onSaludoPulsado = {
+                                        textoRecibido ->
+                                        pila.add(Saludo(textoRecibido))
+                                    }
+                                )
+                            }
 
+                            entry<Perfil>{
+                                PantallaPerfil()
+                            }
 
-                    // TODO 4: CREAR EL ENTRYPROVIDER
+                            entry<Saludo>{
+                                argumentos ->
+                                  PantallaSaludo(argumentos.saludoRecibido)
+                            }
 
-                    // TODO 5: CONFIGURAR LOS EVENTOS
+                        }
+                    )
                 }
             }
         }

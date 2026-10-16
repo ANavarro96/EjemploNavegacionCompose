@@ -27,16 +27,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.ejemplonavegacioncompose.R
+import com.example.ejemplonavegacioncompose.ui.keys.Perfil
 
 @Composable
-fun PantallaHome(){
+fun PantallaHome(
+    onPerfilPulsado: () -> Unit,
+    onSaludoPulsado: (String) -> Unit){
     Column(verticalArrangement = Arrangement.Top,
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = Modifier.padding(16.dp)) {
         var texto = rememberTextFieldState()
         Text("Hola guapetón! ¿Cómo te llamas?")
         CuadroTexto(texto)
-        Button(onClick = /* TODO: Movernos a la pantalla del saludo */ {},
+        Button(onClick = { onSaludoPulsado(texto.text.toString()) },
             Modifier
                 .wrapContentSize(Alignment.Center)) {
             Row(verticalAlignment = Alignment.CenterVertically){ Icon(painter =   painterResource( R.drawable.favorito), contentDescription = "")
@@ -44,7 +47,7 @@ fun PantallaHome(){
             }
         }
 
-        Button(onClick = {} /* TODO: Movernos a la pantalla del perfil */ ,
+        Button(onClick = onPerfilPulsado ,
             Modifier
                 .wrapContentSize(Alignment.Center)) {
             Row(verticalAlignment = Alignment.CenterVertically){ Icon(painter =   painterResource( R.drawable.favorito), contentDescription = "")
